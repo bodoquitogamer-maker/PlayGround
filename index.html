@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#07060c" />
+  <meta name="description" content="Midnight Pulse — an adults-only rooftop seduction game. Move, charm, and seal the night." />
+  <title>Midnight Pulse — A Rooftop Seduction</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="fx fx-vignette" aria-hidden="true"></div>
+  <div class="fx fx-grain" aria-hidden="true"></div>
+  <div class="fx fx-scanline" aria-hidden="true"></div>
+
+  <section id="titleScreen" class="screen title-screen">
+    <div class="title-veil"></div>
+    <div class="title-content">
+      <div class="eyebrow"><span></span> A NIGHTSHIFT STORY <span></span></div>
+      <h1 class="wordmark"><span class="wordmark-thin">Midnight</span><span class="wordmark-hot">PULSE</span></h1>
+      <p class="tagline">One rooftop. Three sparks. <em>No tomorrow.</em></p>
+      <p class="title-lede">You are Kai — built like a secret, charming like a problem. The city is beneath you. Pick a spark and make the night unforgettable.</p>
+      <div class="title-actions">
+        <button id="startBtn" class="btn-primary" type="button">Start</button>
+        <div class="rating"><strong>18+</strong><span>Suggestive<br>themes</span></div>
+      </div>
+      <p class="title-fineprint">All characters are adults. Intimacy is implied and fades to black.</p>
+    </div>
+    <div class="title-footer">
+      <div class="control-tip"><span class="keycap">WASD</span><span>move</span></div>
+      <div class="control-tip"><span class="keycap">DRAG</span><span>look</span></div>
+      <div class="control-tip"><span class="keycap">E</span><span>charm</span></div>
+      <div class="title-edition">ROOFTOP / 11:47 PM</div>
+    </div>
+    <div class="title-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+  </section>
+
+  <main id="hud" class="hud hidden">
+    <header class="hud-top">
+      <div class="hud-brand">
+        <span class="hud-brand-mark"></span>
+        <div><strong>MIDNIGHT</strong><span>PULSE</span></div>
+      </div>
+      <div class="objective-card">
+        <span class="objective-label"><i></i> TONIGHT'S MISSION</span>
+        <span id="objectiveText">Find a spark. Follow the heat.</span>
+      </div>
+      <div class="hud-right">
+        <div class="clock"><span id="clock">11:47</span><small id="clockPeriod">PM</small></div>
+        <button id="audioBtn" class="round-btn" type="button" aria-label="Mute sound" title="Mute sound">
+          <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.2-3.87v7.74A4.5 4.5 0 0 0 16.5 12Zm-2.2-8.7v2.06a7 7 0 0 1 0 13.28v2.06a9 9 0 0 0 0-17.4Z"/></svg>
+          <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.6 3 2.7 2.7-1.4 1.4-2.7-2.7-2.7 2.7-1.4-1.4 2.7-2.7-2.7-2.7 1.4-1.4 2.7 2.7 2.7-2.7 1.4 1.4-2.7 2.7Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="npcTags" class="npc-tags" aria-hidden="true"></div>
+
+    <div class="hud-bottom">
+      <div id="joystick" class="joystick" aria-label="Movement joystick">
+        <div class="joystick-ring"></div>
+        <div class="joystick-knob" id="joystickKnob">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 7.5 8.5l1.4 1.4L11 7.8V12H7.5l-1.4 1.4L12 20l5.9-6.6-1.4-1.4H13V7.8l2.1 2.1 1.4-1.4L12 4Z"/></svg>
+        </div>
+        <span class="joystick-label">MOVE</span>
+      </div>
+
+      <div class="center-hint" id="centerHint">
+        <span class="pulse-dot"></span>
+        <span id="hintText">Move with the joystick. Find someone who looks like trouble.</span>
+      </div>
+
+      <div class="action-cluster">
+        <div id="contextPrompt" class="context-prompt hidden">
+          <span id="contextName">SABLE</span>
+          <small id="contextSub">Tap to charm</small>
+        </div>
+        <button id="actionBtn" class="action-btn" type="button" aria-label="Charm">
+          <span class="action-rings"></span>
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 27.2S4.8 20.9 4.8 13.2A6.2 6.2 0 0 1 16 9.3a6.2 6.2 0 0 1 11.2 3.9c0 7.7-11.2 14-11.2 14Z" fill="currentColor"/>
+            <path d="M16 9.3v17.9M7.1 13.7h17.8" stroke="rgba(8,5,12,.25)" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+          <span id="actionLabel">CHARM</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status"></div>
+    <div id="waypoint" class="waypoint hidden">
+      <span class="waypoint-arrow">↑</span>
+      <span id="waypointName">SABLE</span>
+      <small id="waypointDist">12m</small>
+    </div>
+  </main>
+
+  <section id="dialogue" class="overlay dialogue-overlay hidden" aria-modal="true" role="dialog" aria-label="Conversation">
+    <div class="dialogue-shade"></div>
+    <header class="dialogue-head">
+      <div class="spark-id"><span id="dialogueNumber">SPARK 01</span><i></i><span id="dialogueRole">MIXOLOGIST</span></div>
+      <div class="dialogue-title-row">
+        <div>
+          <h2 id="dialogueName">Sable Vane</h2>
+          <p id="dialogueVibe">Bold. Observant. Dangerous after midnight.</p>
+        </div>
+        <div class="heat-readout">
+          <span>HEAT</span>
+          <strong id="dialogueHeat">0</strong><small>%</small>
+        </div>
+      </div>
+      <div class="heat-track"><i id="dialogueHeatBar"></i></div>
+    </header>
+
+    <div class="dialogue-panel">
+      <button id="closeDialogue" class="close-btn" type="button" aria-label="Leave conversation">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6 10.6 12 5 6.4 6.4 5Z"/></svg>
+      </button>
+      <div class="speaker-tag"><span class="speaker-dot"></span><span id="speakerName">SABLE</span><small id="roundTag">01 / 03</small></div>
+      <p id="dialogueText" class="dialogue-text"></p>
+      <div id="dialogueChoices" class="dialogue-choices"></div>
+      <div id="dialogueReaction" class="dialogue-reaction"></div>
+    </div>
+  </section>
+
+  <section id="pulseScreen" class="overlay pulse-overlay hidden" aria-modal="true" role="dialog" aria-label="Pulse challenge">
+    <div class="pulse-shade"></div>
+    <div class="pulse-layout">
+      <header class="pulse-head">
+        <div class="spark-id"><span>THE PULSE</span><i></i><span>SYNC WITH <b id="pulseNpc">SABLE</b></span></div>
+        <h2>Don't think.<br><em>Feel it.</em></h2>
+        <p>Tap when the spark crosses the glow. Three perfect beats and the night is yours.</p>
+      </header>
+      <div class="pulse-stage">
+        <div class="pulse-meter">
+          <svg class="pulse-svg" viewBox="0 0 300 300" aria-hidden="true">
+            <circle class="pulse-track" cx="150" cy="150" r="116"></circle>
+            <circle id="pulseTarget" class="pulse-target" cx="150" cy="150" r="116"></circle>
+            <circle class="pulse-track-inner" cx="150" cy="150" r="84"></circle>
+            <circle class="pulse-glow" cx="150" cy="150" r="50"></circle>
+          </svg>
+          <div id="pulseSpark" class="pulse-spark"><span></span></div>
+          <div class="pulse-center">
+            <span id="pulseRound">01</span>
+            <small>OF 03</small>
+          </div>
+          <div id="pulsePulse" class="pulse-beat"></div>
+        </div>
+        <div class="pulse-side">
+          <div class="beat-dots" id="beatDots"><i></i><i></i><i></i></div>
+          <div id="pulseFeedback" class="pulse-feedback">Find the rhythm.</div>
+          <button id="pulseTap" class="btn-pulse" type="button"><span>TAP</span><small>on the glow</small></button>
+          <button id="pulseLeave" class="text-btn" type="button">Step away</button>
+        </div>
+      </div>
+      <div id="pulseResult" class="pulse-result hidden">
+        <div class="result-card">
+          <span class="result-kicker" id="resultKicker">THE NIGHT SHIFTS</span>
+          <h3 id="resultTitle">Good. But not yet.</h3>
+          <p id="resultCopy">You feel the pull. One more moment might be all it takes.</p>
+          <div class="result-stats"><span>HEAT <strong id="resultHeat">67%</strong></span><span>BEATS <strong id="resultBeats">2 / 3</strong></span></div>
+          <button id="resultAction" class="btn-primary" type="button">One more moment</button>
+          <button id="resultLeave" class="text-btn" type="button">Back to the rooftop</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="fadeVeil" class="fade-veil" aria-hidden="true">
+    <div class="fade-lines">
+      <span id="fadeLine1">Take her hand.</span>
+      <span id="fadeLine2">The elevator hums.</span>
+      <span id="fadeLine3">Everything else can wait.</span>
+    </div>
+    <div class="fade-heart">♥</div>
+  </div>
+
+  <section id="endingScreen" class="screen ending-screen hidden" aria-modal="true" role="dialog" aria-label="Night sealed">
+    <div class="ending-glow"></div>
+    <div class="ending-content">
+      <div class="eyebrow"><span></span> NIGHT SEALED <span></span></div>
+      <div class="ending-heart">♥</div>
+      <h2 id="endingTitle">Sable</h2>
+      <p id="endingQuote">“You're trouble,” she whispers. “Stay anyway.”</p>
+      <div class="ending-stats">
+        <div><span>FINAL HEAT</span><strong id="endingHeat">100%</strong></div>
+        <div><span>THE HOUR</span><strong id="endingTime">12:06 AM</strong></div>
+        <div><span>THE CITY</span><strong>Beneath you</strong></div>
+      </div>
+      <p class="ending-note">All characters are adults. The rest of the night happens off-screen.</p>
+      <div class="ending-actions">
+        <button id="replayBtn" class="btn-primary" type="button">Another night</button>
+        <button id="endingTitleBtn" class="text-btn" type="button">Back to title</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="rotateHint" class="rotate-hint hidden">
+    <span>↻</span>
+    <p>Landscape is the mood.<br>Portrait still works.</p>
+  </div>
+
+  <noscript><div class="noscript">This rooftop needs JavaScript.</div></noscript>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
