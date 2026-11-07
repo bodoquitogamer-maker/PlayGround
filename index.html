@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#071d30" />
+  <title>Fruitbound — Grand Line Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <canvas id="game" aria-label="Fruitbound island game"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Fruitbound home">
+        <span class="brand-mark"><span>✦</span></span>
+        <span class="brand-word">FRUIT<span>BOUND</span><small>GRAND LINE ONLINE</small></span>
+      </a>
+      <div class="server-pill"><i></i><span>WINDMILL ISLAND</span><b>·</b><span>LIVE</span><small>4 CREW</small></div>
+      <div class="top-actions">
+        <button class="icon-btn map-btn" title="Map (M)" aria-label="Open map"><span>▦</span></button>
+        <button class="icon-btn" id="soundBtn" title="Toggle sound" aria-label="Toggle sound">♫</button>
+        <button class="avatar-btn" aria-label="Player profile">K</button>
+      </div>
+    </header>
+
+    <section class="player-card panel">
+      <div class="player-line"><div class="portrait">⚔</div><div class="player-copy"><strong>CAPTAIN KAI</strong><span>THE ROOKIE SAILOR</span></div><div class="level-badge">LVL <b id="level">08</b></div></div>
+      <div class="stat-row"><span class="stat-icon heart">♥</span><div class="meter"><div class="meter-fill health-fill" id="healthFill"></div></div><b id="healthText">100 <small>/ 100</small></b></div>
+      <div class="stat-row"><span class="stat-icon bolt">ϟ</span><div class="meter"><div class="meter-fill energy-fill" id="energyFill"></div></div><b id="energyText">100 <small>/ 100</small></b></div>
+      <div class="xp-row"><span>XP</span><div class="meter xp-meter"><div class="meter-fill xp-fill" id="xpFill"></div></div><b id="xpText">320 / 500</b></div>
+    </section>
+
+    <section class="quest-card panel" id="questCard">
+      <div class="eyebrow"><span class="quest-icon">✦</span> ACTIVE QUEST <span class="quest-dots">•••</span></div>
+      <div class="quest-title">Bandit trouble</div>
+      <div class="quest-sub">Clear out the island bandits</div>
+      <div class="quest-progress"><div class="quest-bar"><i id="questFill"></i></div><span id="questCount">0 / 5</span></div>
+      <div class="quest-reward"><span>◈</span> 1,250 <small>฿</small><span class="reward-sep">·</span><span class="star">✦</span> 840 XP</div>
+    </section>
+
+    <section class="crew-card panel">
+      <div class="crew-head"><div><span class="tiny-label">YOUR CREW</span><strong>Nearby sailors <em>4</em></strong></div><button id="crewToggle" class="dots-btn" aria-label="Crew options">•••</button></div>
+      <div class="crew-list">
+        <div class="crew-member"><div class="crew-avatar ca-one">✦</div><span><b>Rin</b><small>Fruit hunter</small></span><i class="online-dot"></i><small class="crew-lvl">Lv. 12</small></div>
+        <div class="crew-member"><div class="crew-avatar ca-two">刀</div><span><b>Jax</b><small>Swordsman</small></span><i class="online-dot"></i><small class="crew-lvl">Lv. 09</small></div>
+        <div class="crew-member"><div class="crew-avatar ca-three">☠</div><span><b>Miko</b><small>Navigator</small></span><i class="online-dot"></i><small class="crew-lvl">Lv. 11</small></div>
+      </div>
+      <div class="crew-foot"><span class="ping-dot"></span> Crew is exploring the island</div>
+    </section>
+
+    <div class="location-chip"><span>⌖</span><div><b>Windmill Village</b><small>First Sea <i>·</i> Safe zone nearby</small></div></div>
+    <div class="world-toast" id="toast"><span>✦</span><b>Bandit defeated!</b><small>+45 XP &nbsp; +80 ฿</small></div>
+
+    <div class="objective-hint"><span class="keycap">W A S D</span><span>Move around</span><i>·</i><span class="keycap">CLICK</span><span>Attack</span></div>
+
+    <div class="hotbar-wrap">
+      <div class="fruit-chip"><div class="fruit-icon">🍈</div><span><small>DEVIL FRUIT</small><b>Gum-Gum</b></span><i class="fruit-glow"></i></div>
+      <div class="hotbar">
+        <button class="skill basic-skill" data-action="attack" aria-label="Basic attack"><span class="skill-key">LMB</span><span class="skill-symbol">⚔</span><b>Combat</b></button>
+        <button class="skill" data-action="q" aria-label="Gum-Gum Pistol"><span class="skill-key">Q</span><span class="skill-symbol gum-symbol">➤</span><b>Pistol</b><i class="cooldown"></i></button>
+        <button class="skill" data-action="e" aria-label="Gum-Gum Gatling"><span class="skill-key">E</span><span class="skill-symbol gum-symbol">✹</span><b>Gatling</b><i class="cooldown"></i></button>
+        <button class="skill" data-action="r" aria-label="Gum-Gum Rocket"><span class="skill-key">R</span><span class="skill-symbol gum-symbol">➤</span><b>Rocket</b><i class="cooldown"></i></button>
+        <button class="skill dash-skill" data-action="space" aria-label="Dash"><span class="skill-key">SPACE</span><span class="skill-symbol">➜</span><b>Dash</b><i class="cooldown"></i></button>
+      </div>
+      <div class="cash-chip"><span>฿</span><b id="cash">12,480</b><button title="Shop">＋</button></div>
+    </div>
+
+    <div class="mobile-controls" aria-label="Touch controls">
+      <div class="joystick" id="joystick"><div class="joy-knob"></div></div>
+      <button class="mobile-attack" data-action="attack">⚔</button>
+    </div>
+
+    <div class="map-overlay" id="mapOverlay"><div class="map-window"><button id="closeMap">×</button><span class="tiny-label">FIRST SEA · AREA MAP</span><h2>Windmill Village</h2><div class="mini-map"><span class="map-island">✦</span><i class="map-player">▲</i><b>YOU ARE HERE</b><small>WINDMILL ISLAND</small></div><p>Explore the island and help your crew clear out the bandits.</p></div></div>
+    <div class="level-toast" id="levelToast"><span>✦</span><b>LEVEL UP!</b><small>You reached level <i id="newLevel">9</i></small></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
